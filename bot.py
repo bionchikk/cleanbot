@@ -41,12 +41,10 @@ def get_other_options(user_id):
                "Помоем посуду":10, "Внутри микроволновки":20, "Погладим белье":20,
                "Помоем окна":15, "Уберем на балконе":20}
 
-    # Получаем выбранные опции для данного пользователя
     user_options = selected_options.get(user_id, [])
 
     options_markup = InlineKeyboardMarkup(row_width=2)
     for option, value in options.items():
-        # Если опция уже выбрана пользователем, не добавляем ее в клавиатуру
         if option not in user_options:
             options_markup.add(InlineKeyboardButton(option, callback_data="options" + option))
     options_markup.add(InlineKeyboardButton("Вернуться к прошлому шагу", callback_data="f"))
@@ -458,9 +456,6 @@ def check_tools(message):
 
 
 
-
-
-
 @bot.message_handler(func=lambda message: message.chat.id == ADMIN_CHAT_ID, commands=['end_day'])
 def end_day(message):
     user_name = message.from_user.username or message.from_user.first_name or message.from_user.last_name
@@ -487,12 +482,6 @@ def get_all_profit(message):
     profit = calculate_total_profit()
     bot.send_message(message.chat.id,f'Общая прибыль за все время: {profit}р')
 
-
-
-
-
-
-#
 
 
 def feedbacks(message):
@@ -533,8 +522,6 @@ def family_answers(message):
         bot.send_message(message.chat.id,
                          "Неверный формат данных, ожидалось — Иванов!\nВведите корректные данные заново.")
         bot.register_next_step_handler(message, family_answers)
-
-
 
 
 
