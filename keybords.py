@@ -1,8 +1,5 @@
 
 from datetime import datetime, timedelta
-
-
-import telebot
 from telebot import types
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -114,13 +111,12 @@ def generate_date_keyboard():
     today = datetime.now()
     for i in range(7):
         next_day = today + timedelta(days=i)
-        # Skipping weekends
         if next_day.weekday() < 5:
             callback_data = "day_" + next_day.strftime("%Y-%m-%d")
             keyboard.add(types.InlineKeyboardButton(text=next_day.strftime("%Y-%m-%d"), callback_data=callback_data))
     return keyboard
 
-# Function to generate a keyboard with time from 8:00 to 15:00
+
 def generate_time_keyboard():
     keyboard = types.InlineKeyboardMarkup()
     current_time = datetime.strptime("08:00", "%H:%M")
@@ -143,7 +139,7 @@ def get_clean_often_keyboard():
 
 def get_other_options():
     options = {"Внутри холодильника":25,"Внутри духоки":25,"Внутри кухонных шкафов":25,"Помоем посуду":10,"Внутри микроволновки":20,"Погладим белье":20,"Помоем окна":15,"Уберем на болконе":20}
-    options_markup = InlineKeyboardMarkup(row_width=2)  # Устанавливаем количество кнопок в ряду равным 2
+    options_markup = InlineKeyboardMarkup(row_width=2)
     for option, value in options.items():
         options_markup.add(InlineKeyboardButton(option, callback_data="options" + option))
     options_markup.add(InlineKeyboardButton("Вернуться к прошлому шагу",callback_data="f"))
