@@ -1,6 +1,5 @@
 import sqlite3 as sl
 from datetime import datetime, timedelta,date
-
 from telebot import types
 
 
@@ -182,12 +181,6 @@ def add_occupation(id_staff, day_of_week, start_hour_str, duration_hours, id_ord
         if conn:
             conn.close()
 
-
-
-
-
-
-
 def add_new_shedule(staff_id):
     conn = sl.connect('cleambd.db')
     cursor = conn.cursor()
@@ -218,27 +211,27 @@ def get_available_dates_and_times():
     conn = sl.connect('cleambd.db')
     cursor = conn.cursor()
     today = datetime.now().date()
-    end_of_week = today + timedelta(days=6 - today.weekday())  # Последний день текущей недели
-    next_week_start = end_of_week + timedelta(days=1)  # Первый день следующей недели
-    next_week_end = next_week_start + timedelta(days=4)  # Последний день следующей недели
+    end_of_week = today + timedelta(days=6 - today.weekday())  
+    next_week_start = end_of_week + timedelta(days=1)  
+    next_week_end = next_week_start + timedelta(days=4) 
 
     available_dates = []
     for i in range(7):
         current_date = today + timedelta(days=i)
-        if current_date.weekday() < 5:  # Исключаем субботу и воскресенье
+        if current_date.weekday() < 5: 
             formatted_date = current_date.strftime("%Y-%m-%d")
             cursor.execute("SELECT COUNT(*) FROM shedule WHERE day_of_week = ?", (formatted_date,))
             count = cursor.fetchone()[0]
-            if count < 8:  # Если в этот день есть хотя бы один свободный час, добавляем его в список доступных дат
+            if count < 8: 
                 available_dates.append(formatted_date)
 
     for i in range((next_week_end - next_week_start).days + 1):
         current_date = next_week_start + timedelta(days=i)
-        if current_date.weekday() < 5:  # Исключаем субботу и воскресенье
+        if current_date.weekday() < 5:  
             formatted_date = current_date.strftime("%Y-%m-%d")
             cursor.execute("SELECT COUNT(*) FROM shedule WHERE day_of_week = ?", (formatted_date,))
             count = cursor.fetchone()[0]
-            if count < 8:  # Если в этот день есть хотя бы один свободный час, добавляем его в список доступных дат
+            if count < 8: 
                 available_dates.append(formatted_date)
 
     date_keyboard = generate_date_keyboard(available_dates)
@@ -266,7 +259,7 @@ def get_available_times(date):
         return available_times
     else:
         return ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00",
-                "15:00"]  # Если нет записей на эту дату, предоставляем все часы
+                "15:00"]  
 
 
 def time_keyboard(available_times):
@@ -302,7 +295,6 @@ def return_tools():
     cursor  =conn.cursor()
     cursor.execute(""" UPDATE Tools
                         SET "Vacuum cleaner" = "Vacuum cleaner"+2""")
-
     conn.commit()
     conn.close()
 
@@ -312,7 +304,6 @@ def seelct_all_tools():
     cursor = conn.cursor()
     cursor.execute(""" SELECT * FROM Tools""")
     data = cursor.fetchall()
-
     conn.commit()
     conn.close()
 
