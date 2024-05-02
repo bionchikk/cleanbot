@@ -8,7 +8,8 @@ from info.text import START_TEXT,INFO_LIST,ROOM_ONFO,KITCHEN_INFO,TOILET_INFO,CO
 from bdfile import add_users, find_user_by_id, get_all_info_users, add_order, get_number_of_order, update_order, \
     add_occupation, get_second_name, get_available_times, time_keyboard, \
     generate_date_keyboard, get_available_dates_and_times, get_all_orders_by_user, add_fidback, get_all_orders, \
-    count_orders_last_month, calculate_total_profit, calculate_profit_last_month, add_new_shedule,get_free_staff_id
+    count_orders_last_month, calculate_total_profit, calculate_profit_last_month, add_new_shedule, get_free_staff_id, \
+    get_tools, return_tools, seelct_all_tools
 from google_app import update_sheet
 from keybords import clean_room,yes_no_markup,order_markup,order_rooms,get_order,info_button,accept_order,ready_order,answer_keyboard,repair_rooms,toilet_order,generate_date_keyboard,generate_time_keyboard,get_clean_often_keyboard,get_menu_keyboard,get_rating_keybord
 
@@ -31,6 +32,8 @@ admin_group_id = -4136830193
 selected_options = {}
 text_often =''
 staff_id = 0
+tools_dict = {}
+
 
 menu_keybord = InlineKeyboardMarkup().add(InlineKeyboardButton("Меню", callback_data="menu"))
 def get_other_options(user_id):
@@ -410,7 +413,7 @@ def query_handler(call):
         bot.send_message(call.message.chat.id,"Спасибо вам за оценку!Будем вас ждать еще",reply_markup=get_menu_keyboard())
 
 
-def check_button_click(message,text):
+def check_button_click(message,text,number):
     if message.content_type == 'text':
         try:
             bot.delete_message(message.chat.id, message.message_id)
@@ -421,8 +424,7 @@ def check_button_click(message,text):
         add_occupation(staff_id, chosen_date, chosen_time, duration_hours=duration_hours, id_order=number[0])
         user = bot.get_chat(id)
         username = user.username
-        print(username)
-        print(id)
+
         text+=f"\nЗаказ будет выполнять @{username}"
         bot.send_message(message.chat.id, text,reply_markup=ready_order())
 
@@ -444,7 +446,29 @@ def start_day(message):
     id_staff = message.from_user.id
     add_new_shedule(id_staff)
     user_name = message.from_user.username or message.from_user.first_name or message.from_user.last_name
-    bot.send_message(message.chat.id,f"Пользователь @{user_name} начал рабочий день ")
+    get_tools(3, 3, 2)
+    bot.send_message(message.chat.id,f"Пользователь @{user_name},начал день ")
+
+
+
+@bot.message_handler(func=lambda message: message.chat.id == ADMIN_CHAT_ID, commands=['check_tools'])
+def check_tools(message):
+    data = seelct_all_tools()
+    bot.send_message(message.chat.id,f"Количество инвентаря: \nПерчатки :{data[0][1]}\nТряпки :{data[0][2]}\n Пылесосы :{data[0][3]}")
+
+
+
+
+
+
+@bot.message_handler(func=lambda message: message.chat.id == ADMIN_CHAT_ID, commands=['end_day'])
+def end_day(message):
+    user_name = message.from_user.username or message.from_user.first_name or message.from_user.last_name
+    return_tools()
+    bot.send_message(message.chat.id, f"Пользователь @{user_name},закончил день ")
+
+
+
 
 
 
