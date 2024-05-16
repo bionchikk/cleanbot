@@ -4,7 +4,7 @@ from telebot import types
 
 
 def add_users(firstname,secondmnme,tel,adress,telegramm_id):
-    con = sl.connect("cleambd.db")
+    con = sl.connect("your_bd_name.db")
     with con:
         con.execute("""
                     INSERT INTO Users (firstname, secondname, tel, adress,telegramm_id) 
@@ -13,7 +13,7 @@ def add_users(firstname,secondmnme,tel,adress,telegramm_id):
 
 
 def find_user_by_id(tg_id):
-    con = sl.connect("cleambd.db")
+    con = sl.connect("your_bd_name.db")
     with con:
         cursor = con.cursor()
         cursor.execute("""
@@ -23,7 +23,7 @@ def find_user_by_id(tg_id):
     return bool(result)
 
 def get_all_info_users(tg_id):
-    con = sl.connect("cleambd.db")
+    con = sl.connect("your_bd_name.db")
     with con:
         cursor = con.cursor()
         cursor.execute("SELECT * FROM Users WHERE telegramm_id= ?", (tg_id,))
@@ -32,7 +32,7 @@ def get_all_info_users(tg_id):
 
 
 def select_all_staff():
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute("""SELECT second_name FROM Staff""")
 
@@ -42,7 +42,7 @@ def select_all_staff():
 select_all_staff()
 
 def add_order(tg_id_user, tg_id_staff, price, status,day):
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -59,7 +59,7 @@ def add_order(tg_id_user, tg_id_staff, price, status,day):
     conn.close()
 
 def get_number_of_order(tg_id_user, tg_id_staff, price, status,day):
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute("""SELECT id FROM Orders 
     WHERE id_client = (SELECT id FROM Users WHERE telegramm_id = ?)
@@ -73,7 +73,7 @@ def get_number_of_order(tg_id_user, tg_id_staff, price, status,day):
     return result
 
 def add_fidback(user_id,order_id,feedback,rating):
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM Users WHERE telegramm_id = ?", (user_id,))
     client_id = cursor.fetchone()
@@ -87,7 +87,7 @@ def add_fidback(user_id,order_id,feedback,rating):
     return False
 
 def get_all_orders():
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM Orders WHERE status = 'Выполнен'")
     count = cursor.fetchone()[0]
@@ -97,7 +97,7 @@ def get_all_orders():
 
 
 def count_orders_last_month():
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     end_date = datetime.now().replace(day=1)
     start_date = end_date - timedelta(days=30)
@@ -110,7 +110,7 @@ def count_orders_last_month():
     return count
 
 def calculate_total_profit():
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute("""
         SELECT SUM(price) AS total_profit
@@ -122,7 +122,7 @@ def calculate_total_profit():
     return total_profit
 
 def calculate_profit_last_month():
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     end_date = datetime.now().replace(day=1)
     start_date = end_date - timedelta(days=30)
@@ -133,7 +133,7 @@ def calculate_profit_last_month():
 
     return profit_last_month
 def update_order(id_order,status):
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute("""UPDATE Orders
     SET status =?
@@ -143,7 +143,7 @@ def update_order(id_order,status):
 
 
 def get_second_name(id):
-    con = sl.connect("cleambd.db")
+    con = sl.connect("your_bd_name.db")
     with con:
         cursor = con.cursor()
         cursor.execute("SELECT second_name FROM staff WHERE tg_id= ?", (id,))
@@ -153,7 +153,7 @@ def get_second_name(id):
 
 def add_occupation(id_staff, day_of_week, start_hour_str, duration_hours, id_order):
     try:
-        conn = sl.connect('cleambd.db')
+        conn = sl.connect("your_bd_name.db")
         cursor = conn.cursor()
 
         work_hours = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"]
@@ -182,7 +182,7 @@ def add_occupation(id_staff, day_of_week, start_hour_str, duration_hours, id_ord
             conn.close()
 
 def add_new_shedule(staff_id):
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     today = date.today()
     cursor.execute(
@@ -195,7 +195,7 @@ def add_new_shedule(staff_id):
 
 def get_free_staff_id(day_of_week, start_time, duration_hours):
 
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     query = f"SELECT id_staff FROM shedule WHERE day_of_week = ? AND \"{start_time}\" = 0"
     for i in range(1, duration_hours):
@@ -208,7 +208,7 @@ def get_free_staff_id(day_of_week, start_time, duration_hours):
 
 
 def get_available_dates_and_times():
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     today = datetime.now().date()
     end_of_week = today + timedelta(days=6 - today.weekday())  
@@ -246,7 +246,7 @@ def generate_date_keyboard(available_dates):
     return keyboard
 
 def get_available_times(date):
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM shedule WHERE day_of_week = ?", (date,))
     schedule_data = cursor.fetchone()
@@ -269,7 +269,7 @@ def time_keyboard(available_times):
         keyboard.add(types.InlineKeyboardButton(text=time, callback_data=callback_data))
     return keyboard
 def get_all_orders_by_user(user_id):
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM orders  WHERE id_client = (SELECT id FROM Users WHERE telegramm_id = ?)", (user_id,))
     data = cursor.fetchall()
@@ -278,7 +278,7 @@ def get_all_orders_by_user(user_id):
 
 
 def get_tools(amount_gl,amount_cl,amount_vc):
-    conn = sl.connect('cleambd.db')
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute("""
             UPDATE Tools
@@ -291,7 +291,7 @@ def get_tools(amount_gl,amount_cl,amount_vc):
     conn.close()
 
 def return_tools():
-    conn = sl.connect("cleambd.db")
+    conn = sl.connect("your_bd_name.db")
     cursor  =conn.cursor()
     cursor.execute(""" UPDATE Tools
                         SET "Vacuum cleaner" = "Vacuum cleaner"+2""")
@@ -300,7 +300,7 @@ def return_tools():
 
 
 def seelct_all_tools():
-    conn = sl.connect("cleambd.db")
+    conn = sl.connect("your_bd_name.db")
     cursor = conn.cursor()
     cursor.execute(""" SELECT * FROM Tools""")
     data = cursor.fetchall()
