@@ -8,11 +8,11 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 def update_sheet(worker_name, date, start_time, duration_hours):
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('cleanproject-421520-c6e6efde7a68.json', scope)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('your_json_file.json', scope)
     client = gspread.authorize(credentials)
 
 
-    sheet = client.open('cleantable').sheet1
+    sheet = client.open('your_table_name').sheet1
 
 
     date_range = sheet.range('B4:BD4')
