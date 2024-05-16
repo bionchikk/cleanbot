@@ -13,7 +13,7 @@ Telegram бот для клининговой компании. Реализов
 <img width="417" alt="Снимок экрана 2024-05-16 в 22 18 06" src="https://github.com/bionchikk/cleanbot/assets/167641560/80f5d93d-b219-4385-8744-b64a7b55cf74">
 
 <img width="452" alt="Снимок экрана 2024-05-16 в 21 57 03" src="https://github.com/bionchikk/cleanbot/assets/167641560/0f34957a-b40a-414a-bf87-094f4a744bf7">
-bf-b3fa-f1efbad78aff">
+
 
 После выбора этих компанентов можно оформить на данном этапе или перейти к следующему этапу 
 
