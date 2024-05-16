@@ -1,2 +1,2 @@
-BOT_TOKEN = "6776655564:AAH-8xOHD98JYaAhAdmpa1jTrisbVve1hco"
-ADMIN_CHAT_ID = -4127668546
+BOT_TOKEN = "your_tg_bot_token"
+ADMIN_CHAT_ID = -"your_admin_chat_id"
